@@ -39,7 +39,7 @@ export default function Index() {
             <h2 className="text-2xl md:text-3xl font-semibold mb-6 md:mb-10 text-gray-900">Post em Destaque</h2>
             <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
               <div className="grid md:grid-cols-2 gap-0">
-                <div className="relative w-full aspect-video md:aspect-square bg-gray-100">
+                <div className="relative w-full aspect-video md:aspect-square ">
                   {featuredPost.image_url && (
                     <OptimizedImage
                       src={featuredPost.image_url}
