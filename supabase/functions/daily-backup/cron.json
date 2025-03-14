@@ -1,0 +1,8 @@
+{
+  "cron": "0 0 * * *",
+  "name": "daily-backup",
+  "enabled": true,
+  "httpMethod": "POST",
+  "schedule": "0 0 * * *",
+  "timezone": "America/Sao_Paulo"
+} 

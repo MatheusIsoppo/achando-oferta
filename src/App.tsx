@@ -13,6 +13,9 @@ import Terms from '@/pages/Terms';
 import ScrollToTop from "@/components/ScrollToTop";
 import Posts from "@/pages/Posts";
 import CookieConsent from "@/components/CookieConsent";
+import BackupManager from "@/pages/BackupManager";
+import AdminRoute from "@/components/AdminRoute";
+import Login from "@/pages/Login";
 
 function App() {
   return (
@@ -32,6 +35,15 @@ function App() {
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/posts" element={<Posts />} />
+              <Route path="/admin/login" element={<Login />} />
+              <Route 
+                path="/admin/backups" 
+                element={
+                  <AdminRoute>
+                    <BackupManager />
+                  </AdminRoute>
+                } 
+              />
             </Routes>
           </main>
           <Footer />
