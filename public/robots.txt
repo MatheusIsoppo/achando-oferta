@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://achandooferta.com.br/sitemap.xml 

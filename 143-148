@@ -1,0 +1,7 @@
+<div className="aspect-w-16 aspect-h-9">
+  <img 
+    src={post.image_url} 
+    alt={post.title}
+    className="w-full h-full object-cover"
+  />
+</div> 

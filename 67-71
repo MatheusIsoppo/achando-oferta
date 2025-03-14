@@ -1,0 +1,7 @@
+<div className="aspect-w-16 aspect-h-9 md:aspect-h-full">
+  <img
+    src={FEATURED_POST.image}
+    alt={FEATURED_POST.title}
+    className="object-cover w-full h-full"
+  />
+</div> 
