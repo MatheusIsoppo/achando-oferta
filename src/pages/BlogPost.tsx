@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import type { Post } from '@/services/postService';
 import StoreButton from '@/components/StoreButton';
 import { Helmet } from 'react-helmet-async';
+import OptimizedImage from '@/components/OptimizedImage';
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -106,10 +107,11 @@ export default function BlogPost() {
           <div className="flex flex-col md:flex-row gap-6 md:gap-8 mb-6 md:mb-8">
             {post.image_url && (
               <div className="flex-1">
-                <img
+                <OptimizedImage
                   src={post.image_url}
                   alt={post.title}
                   className="w-full max-w-[400px] h-auto object-contain rounded-lg shadow-md mx-auto"
+                  priority
                 />
               </div>
             )}

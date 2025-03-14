@@ -4,6 +4,7 @@ import { postService } from '@/services/postService';
 import { Button } from '@/components/ui/button';
 import Navbar from "@/components/Navbar";
 import BlogCard from "@/components/BlogCard";
+import OptimizedImage from '@/components/OptimizedImage';
 
 export default function Index() {
   const [posts, setPosts] = useState([]);
@@ -38,12 +39,15 @@ export default function Index() {
             <h2 className="text-2xl md:text-3xl font-semibold mb-6 md:mb-10 text-gray-900">Post em Destaque</h2>
             <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
               <div className="grid md:grid-cols-2 gap-0">
-                <div className="w-full h-[400px] flex items-center justify-center">
-                  <img
-                    src={featuredPost.image_url}
-                    alt={featuredPost.title}
-                    className="max-w-full max-h-full w-auto h-auto object-contain"
-                  />
+                <div className="relative w-full aspect-video md:aspect-square bg-gray-100">
+                  {featuredPost.image_url && (
+                    <OptimizedImage
+                      src={featuredPost.image_url}
+                      alt={featuredPost.title}
+                      className="w-full h-full"
+                      priority={true}
+                    />
+                  )}
                 </div>
                 <div className="p-6 md:p-10 flex flex-col justify-center">
                   <div className="flex flex-wrap gap-2 mb-4">
@@ -96,22 +100,25 @@ export default function Index() {
                   to={`/blog/${post.slug}`}
                   className="group"
                 >
-                  <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                    <div className="w-full h-[300px] flex items-center justify-center">
-                      <img 
-                        src={post.image_url} 
-                        alt={post.title}
-                        className="max-w-full max-h-full w-auto h-auto object-contain"
-                      />
+                  <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
+                    <div className="relative w-full aspect-[4/3] bg-gray-100">
+                      {post.image_url && (
+                        <OptimizedImage
+                          src={post.image_url}
+                          alt={post.title}
+                          className="w-full h-full"
+                          priority={false}
+                        />
+                      )}
                     </div>
-                    <div className="p-4 md:p-6">
+                    <div className="p-4 md:p-6 flex-1 flex flex-col">
                       <h2 className="text-lg md:text-xl font-semibold mb-2 group-hover:text-blue-600 line-clamp-2">
                         {post.title}
                       </h2>
-                      <p className="text-sm md:text-base text-gray-600 mb-4 line-clamp-2">
+                      <p className="text-sm md:text-base text-gray-600 mb-4 line-clamp-2 flex-1">
                         {post.excerpt}
                       </p>
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-0">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-0 mt-auto">
                         <div className="flex items-center text-gray-600 text-sm mb-2">
                           <span>{post.author}</span>
                         </div>
