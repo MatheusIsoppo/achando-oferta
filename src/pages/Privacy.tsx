@@ -1,90 +1,87 @@
-import Navbar from "@/components/Navbar";
+import { Helmet } from 'react-helmet-async';
 
 const Privacy = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
-      <main className="max-w-5xl mx-auto px-4 py-12 pt-28">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-semibold mb-8 text-gray-900">Política de Privacidade</h1>
-          
-          <div className="bg-white rounded-xl p-8 border border-gray-100 shadow-sm space-y-8">
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold text-gray-900">1. Introdução</h2>
-              <p className="text-base text-gray-600 leading-relaxed">
-                O Achando Oferta está comprometido em proteger sua privacidade. Esta política descreve como 
-                coletamos, usamos e protegemos suas informações quando você utiliza nosso site.
-              </p>
-            </section>
+    <>
+      <Helmet>
+        <title>Política de Privacidade - Achando Oferta</title>
+        <meta name="description" content="Política de privacidade do Achando Oferta. Saiba como tratamos seus dados pessoais." />
+      </Helmet>
 
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold text-gray-900">2. Coleta de Informações</h2>
-              <p className="text-base text-gray-600 leading-relaxed">
-                Coletamos informações quando você:
-              </p>
-              <ul className="list-disc pl-6 text-gray-600 space-y-2">
-                <li>Visita nosso site</li>
-                <li>Utiliza nossa ferramenta de busca</li>
-                <li>Clica em links de produtos</li>
-                <li>Interage com nossas redes sociais</li>
-              </ul>
-            </section>
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 className="text-3xl font-bold mb-8">Política de Privacidade</h1>
+        
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">1. Informações que coletamos</h2>
+          <p className="mb-4">Coletamos as seguintes informações quando você utiliza nosso site:</p>
+          <ul className="list-disc pl-6 mb-4 space-y-2">
+            <li>Informações de navegação através do Google Analytics</li>
+            <li>Cookies necessários para o funcionamento do site</li>
+            <li>Dados fornecidos voluntariamente em formulários</li>
+          </ul>
+        </section>
 
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold text-gray-900">3. Uso de Cookies</h2>
-              <p className="text-base text-gray-600 leading-relaxed">
-                Utilizamos cookies para melhorar sua experiência de navegação. Eles nos ajudam a:
-              </p>
-              <ul className="list-disc pl-6 text-gray-600 space-y-2">
-                <li>Lembrar suas preferências</li>
-                <li>Entender como você usa nosso site</li>
-                <li>Melhorar nossos serviços</li>
-                <li>Fornecer anúncios mais relevantes</li>
-              </ul>
-            </section>
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">2. Como usamos suas informações</h2>
+          <p className="mb-4">Utilizamos suas informações para:</p>
+          <ul className="list-disc pl-6 mb-4 space-y-2">
+            <li>Melhorar a experiência de navegação</li>
+            <li>Análise de uso do site</li>
+            <li>Personalização de conteúdo</li>
+            <li>Comunicação sobre ofertas e novidades (quando autorizado)</li>
+          </ul>
+        </section>
 
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold text-gray-900">4. Compartilhamento de Dados</h2>
-              <p className="text-base text-gray-600 leading-relaxed">
-                Não vendemos suas informações pessoais. Compartilhamos dados apenas com:
-              </p>
-              <ul className="list-disc pl-6 text-gray-600 space-y-2">
-                <li>Parceiros de análise de dados (de forma anônima)</li>
-                <li>Lojas parceiras (apenas quando você clica em seus produtos)</li>
-                <li>Autoridades (quando legalmente exigido)</li>
-              </ul>
-            </section>
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">3. Cookies</h2>
+          <p className="mb-4">Utilizamos cookies para:</p>
+          <ul className="list-disc pl-6 mb-4 space-y-2">
+            <li>Manter você conectado</li>
+            <li>Lembrar suas preferências</li>
+            <li>Análise de tráfego (Google Analytics)</li>
+          </ul>
+        </section>
 
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold text-gray-900">5. Seus Direitos</h2>
-              <p className="text-base text-gray-600 leading-relaxed">
-                Você tem direito a:
-              </p>
-              <ul className="list-disc pl-6 text-gray-600 space-y-2">
-                <li>Acessar seus dados pessoais</li>
-                <li>Solicitar correção de informações</li>
-                <li>Solicitar exclusão de dados</li>
-                <li>Optar por não receber comunicações</li>
-              </ul>
-            </section>
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">4. Links externos</h2>
+          <p className="mb-4">
+            Nosso site contém links para sites externos de parceiros e afiliados. 
+            Não nos responsabilizamos pelas práticas de privacidade desses sites.
+          </p>
+        </section>
 
-            <section className="space-y-4">
-              <h2 className="text-2xl font-semibold text-gray-900">6. Contato</h2>
-              <p className="text-base text-gray-600 leading-relaxed">
-                Para questões sobre privacidade, entre em contato através do email: privacidade@achandooferta.com
-              </p>
-            </section>
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">5. Seus direitos</h2>
+          <p className="mb-4">Você tem direito a:</p>
+          <ul className="list-disc pl-6 mb-4 space-y-2">
+            <li>Acessar seus dados pessoais</li>
+            <li>Solicitar correção de dados incorretos</li>
+            <li>Solicitar exclusão de seus dados</li>
+            <li>Revogar consentimento para uso dos dados</li>
+          </ul>
+        </section>
 
-            <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-              <p className="text-sm text-gray-500">
-                Última atualização: {new Date().toLocaleDateString('pt-BR')}
-              </p>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">6. Contato</h2>
+          <p className="mb-4">
+            Para questões sobre nossa política de privacidade, entre em contato através do email: 
+            <a href="mailto:contato@achandooferta.com.br" className="text-primary hover:underline">
+              {' '}contato@achandooferta.com.br
+            </a>
+          </p>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">7. Atualizações</h2>
+          <p className="mb-4">
+            Esta política pode ser atualizada periodicamente. A data da última atualização será sempre indicada no topo desta página.
+          </p>
+          <p className="text-sm text-gray-600">
+            Última atualização: 14 de Março de 2024
+          </p>
+        </section>
+      </div>
+    </>
   );
 };
 

@@ -12,6 +12,7 @@ import Privacy from '@/pages/Privacy';
 import Terms from '@/pages/Terms';
 import ScrollToTop from "@/components/ScrollToTop";
 import Posts from "@/pages/Posts";
+import CookieConsent from "@/components/CookieConsent";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             </Routes>
           </main>
           <Footer />
+          <CookieConsent />
         </div>
       </Router>
     </HelmetProvider>
