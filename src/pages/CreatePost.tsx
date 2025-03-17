@@ -104,17 +104,17 @@ export default function CreatePost() {
     setError(null);
 
     try {
-      const postData = {
+      const result = await postService.createPost({
         ...formData,
         keywords: formData.keywords.split(',').map(k => k.trim()).filter(k => k),
         slug: generateSlug(formData.title)
-      };
+      });
 
-      const result = await postService.createPost(postData);
-      if (result.success) {
-        navigate(`/blog/${result.slug}`);
+      if (result.success && result.data) {
+        alert('Post criado com sucesso!');
+        navigate(`/blog/${result.data.slug}`);
       } else {
-        setError(result.error || 'Erro ao criar post');
+        setError(result.error?.message || 'Erro ao criar post');
       }
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Erro ao criar post';

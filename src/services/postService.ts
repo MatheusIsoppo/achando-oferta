@@ -50,6 +50,27 @@ export const postService = {
     return data;
   },
 
+  // Verificar se um slug já existe
+  async checkSlugExists(slug: string): Promise<boolean> {
+    try {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('id')
+        .eq('slug', slug)
+        .single();
+
+      if (error && error.code !== 'PGRST116') { // PGRST116 é o código para "nenhum resultado encontrado"
+        console.error('Erro ao verificar slug:', error);
+        return false; // Em caso de erro, permitimos tentar criar
+      }
+
+      return !!data;
+    } catch (error) {
+      console.error('Erro ao verificar slug:', error);
+      return false;
+    }
+  },
+
   // Criar novo post
   async createPost(post: Omit<Post, 'id' | 'published_at'>) {
     // Verificar se o usuário está autenticado
@@ -89,50 +110,41 @@ export const postService = {
       throw new Error('Acesso negado: apenas administradores podem criar posts');
     }
 
-    // Criar o slug base a partir do título
-    let baseSlug = post.title
+    // Criar o slug a partir do título
+    let slug = post.title
       .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
+      .replace(/ /g, '-')
+      .replace(/[^\w-]+/g, '');
 
-    // Verificar se o slug já existe
-    let slug = baseSlug;
+    // Verificar se o slug já existe e adicionar número se necessário
     let counter = 1;
-    let slugExists = true;
+    let originalSlug = slug;
+    while (await this.checkSlugExists(slug)) {
+      slug = `${originalSlug}-${counter}`;
+      counter++;
+    }
 
-    while (slugExists) {
-      const { data: existingPost } = await supabase
+    try {
+      const { data, error } = await supabase
         .from('posts')
-        .select('id')
-        .eq('slug', slug)
+        .insert([{ 
+          ...post, 
+          slug,
+          created_at: new Date().toISOString()
+        }])
+        .select()
         .single();
 
-      if (existingPost) {
-        // Se o slug existe, adiciona um número ao final
-        slug = `${baseSlug}-${counter}`;
-        counter++;
-      } else {
-        slugExists = false;
+      if (error) {
+        console.error('Erro ao criar post:', error);
+        throw error;
       }
-    }
 
-    const { data, error } = await supabase
-      .from('posts')
-      .insert([{ 
-        ...post, 
-        slug,
-        created_at: new Date().toISOString()
-      }])
-      .select()
-      .single();
-
-    if (error) {
+      return { success: true, data };
+    } catch (error) {
       console.error('Erro ao criar post:', error);
-      throw error;
+      return { success: false, error };
     }
-    return data;
   },
 
   // Atualizar post
