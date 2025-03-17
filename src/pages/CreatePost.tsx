@@ -4,6 +4,7 @@ import { postService } from '@/services/postService';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useAuth } from '@/hooks/useAuth';
 
 // Pegando a senha do arquivo .env
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
@@ -24,9 +25,12 @@ const generateSlug = (title: string) => {
 
 export default function CreatePost() {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     excerpt: '',
@@ -90,13 +94,18 @@ export default function CreatePost() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!user) {
+      setError('Você precisa estar autenticado para criar um post');
+      return;
+    }
+
     setIsSubmitting(true);
     setError(null);
 
     try {
       const postData = {
         ...formData,
-        price: formData.price ? parseFloat(formData.price) : undefined,
         keywords: formData.keywords.split(',').map(k => k.trim()).filter(k => k),
         slug: generateSlug(formData.title)
       };
@@ -107,8 +116,9 @@ export default function CreatePost() {
       } else {
         setError(result.error || 'Erro ao criar post');
       }
-    } catch (err: any) {
-      setError(err.message || 'Erro ao criar post');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Erro ao criar post';
+      setError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -139,6 +149,28 @@ export default function CreatePost() {
       table_data: prev.table_data.filter((_, index) => index !== rowIndex)
     }));
   };
+
+  if (authLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8 pt-28">
+        <div className="text-center">Carregando...</div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="container mx-auto px-4 py-8 pt-28">
+        <div className="max-w-md mx-auto">
+          <h1 className="text-2xl font-semibold mb-6 text-center">Acesso Negado</h1>
+          <p className="text-center mb-4">Você precisa estar logado para criar posts.</p>
+          <Button onClick={() => navigate('/admin/login')} className="w-full">
+            Ir para Login
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return (

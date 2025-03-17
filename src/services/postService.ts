@@ -1,9 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from '@/lib/supabase';
 
 export interface Post {
   id?: string;
@@ -57,6 +52,43 @@ export const postService = {
 
   // Criar novo post
   async createPost(post: Omit<Post, 'id' | 'published_at'>) {
+    // Verificar se o usuário está autenticado
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    
+    if (sessionError) {
+      console.error('Erro ao verificar sessão:', sessionError);
+      throw new Error('Erro ao verificar autenticação');
+    }
+
+    if (!session) {
+      console.error('Nenhuma sessão encontrada');
+      throw new Error('Usuário não autenticado');
+    }
+
+    console.log('Usuário autenticado:', {
+      id: session.user.id,
+      email: session.user.email
+    });
+
+    // Verificar role do usuário
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single();
+
+    if (profileError) {
+      console.error('Erro ao verificar perfil:', profileError);
+      throw new Error('Erro ao verificar permissões');
+    }
+
+    console.log('Perfil do usuário:', profile);
+
+    if (profile?.role !== 'admin') {
+      console.error('Usuário não tem permissão de admin');
+      throw new Error('Acesso negado: apenas administradores podem criar posts');
+    }
+
     // Criar o slug a partir do título
     const slug = post.title
       .toLowerCase()
@@ -73,7 +105,10 @@ export const postService = {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Erro ao criar post:', error);
+      throw error;
+    }
     return data;
   },
 
