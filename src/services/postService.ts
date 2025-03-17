@@ -89,11 +89,34 @@ export const postService = {
       throw new Error('Acesso negado: apenas administradores podem criar posts');
     }
 
-    // Criar o slug a partir do título
-    const slug = post.title
+    // Criar o slug base a partir do título
+    let baseSlug = post.title
       .toLowerCase()
-      .replace(/ /g, '-')
-      .replace(/[^\w-]+/g, '');
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
+    // Verificar se o slug já existe
+    let slug = baseSlug;
+    let counter = 1;
+    let slugExists = true;
+
+    while (slugExists) {
+      const { data: existingPost } = await supabase
+        .from('posts')
+        .select('id')
+        .eq('slug', slug)
+        .single();
+
+      if (existingPost) {
+        // Se o slug existe, adiciona um número ao final
+        slug = `${baseSlug}-${counter}`;
+        counter++;
+      } else {
+        slugExists = false;
+      }
+    }
 
     const { data, error } = await supabase
       .from('posts')
