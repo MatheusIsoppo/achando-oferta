@@ -84,6 +84,9 @@ export default function BlogPost() {
       <Helmet>
         <title>{post.title} | Achando Oferta</title>
         <meta name="description" content={post.excerpt} />
+        {post.keywords && (
+          <meta name="keywords" content={post.keywords.join(', ')} />
+        )}
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
         <meta property="og:image" content={post.image_url} />
@@ -95,7 +98,10 @@ export default function BlogPost() {
         <meta name="twitter:description" content={post.excerpt} />
         <meta name="twitter:image" content={post.image_url} />
         <script type="application/ld+json">
-          {JSON.stringify(articleSchema)}
+          {JSON.stringify({
+            ...articleSchema,
+            keywords: post.keywords
+          })}
         </script>
       </Helmet>
 

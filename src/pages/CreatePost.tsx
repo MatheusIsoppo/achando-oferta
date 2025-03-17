@@ -45,7 +45,8 @@ export default function CreatePost() {
       col3: 'Coluna 3'
     },
     affiliate_link: '',
-    store_name: '' as 'mercado_livre' | 'amazon' | 'magalu' | 'kabum' | 'outros'
+    store_name: '' as 'mercado_livre' | 'amazon' | 'magalu' | 'kabum' | 'outros',
+    keywords: '' // Palavras-chave para SEO
   });
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
@@ -89,23 +90,27 @@ export default function CreatePost() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setIsSubmitting(true);
+    setError(null);
+
     try {
-      setLoading(true);
-      // Gerar o slug antes de enviar
-      const postDataWithSlug = {
+      const postData = {
         ...formData,
+        price: formData.price ? parseFloat(formData.price) : undefined,
+        keywords: formData.keywords.split(',').map(k => k.trim()).filter(k => k),
         slug: generateSlug(formData.title)
       };
-      await postService.createPost(postDataWithSlug);
-      alert('Post criado com sucesso!');
-      // Redirecionar para a home
-      navigate('/');
-    } catch (error) {
-      console.error('Erro ao criar post:', error);
-      alert('Erro ao criar post: ' + (error as Error).message);
+
+      const result = await postService.createPost(postData);
+      if (result.success) {
+        navigate(`/blog/${result.slug}`);
+      } else {
+        setError(result.error || 'Erro ao criar post');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Erro ao criar post');
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -397,6 +402,24 @@ export default function CreatePost() {
               className="w-full max-w-md rounded-lg shadow-sm"
             />
           )}
+        </div>
+
+        <div>
+          <label htmlFor="keywords" className="block text-sm font-medium text-gray-700 mb-1">
+            Palavras-chave (separadas por vírgula)
+          </label>
+          <input
+            type="text"
+            id="keywords"
+            name="keywords"
+            value={formData.keywords}
+            onChange={e => setFormData(prev => ({ ...prev, keywords: e.target.value }))}
+            placeholder="exemplo: oferta, smartphone, tecnologia"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+          />
+          <p className="mt-1 text-sm text-gray-500">
+            Adicione palavras-chave relevantes para SEO, separadas por vírgula
+          </p>
         </div>
 
         <Button 

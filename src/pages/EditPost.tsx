@@ -37,7 +37,8 @@ export default function EditPost() {
       col3: 'Coluna 3'
     },
     affiliate_link: '',
-    store_name: '' as 'mercado_livre' | 'amazon' | 'magalu' | 'kabum' | 'outros' | ''
+    store_name: '' as 'mercado_livre' | 'amazon' | 'magalu' | 'kabum' | 'outros' | '',
+    keywords: ''
   });
 
   // Carregar dados do post
@@ -68,7 +69,8 @@ export default function EditPost() {
             col3: 'Coluna 3'
           },
           affiliate_link: data.affiliate_link || '',
-          store_name: data.store_name || '' as 'mercado_livre' | 'amazon' | 'magalu' | 'kabum' | 'outros' | ''
+          store_name: data.store_name || '' as 'mercado_livre' | 'amazon' | 'magalu' | 'kabum' | 'outros' | '',
+          keywords: data.keywords?.join(', ') || ''
         });
       } catch (error) {
         console.error('Erro ao buscar post:', error);
@@ -136,6 +138,7 @@ export default function EditPost() {
         column_names: formData.column_names,
         affiliate_link: formData.affiliate_link || '',
         store_name: (formData.store_name || undefined) as 'mercado_livre' | 'amazon' | 'magalu' | 'kabum' | 'outros' | undefined,
+        keywords: formData.keywords.split(',').map(k => k.trim()).filter(Boolean),
         slug: slug // Mantém o slug original
       };
 
@@ -445,6 +448,24 @@ export default function EditPost() {
               className="w-full max-w-md h-auto rounded-lg"
             />
           )}
+        </div>
+
+        <div>
+          <label htmlFor="keywords" className="block text-sm font-medium text-gray-700 mb-1">
+            Palavras-chave (separadas por vírgula)
+          </label>
+          <input
+            type="text"
+            id="keywords"
+            name="keywords"
+            value={formData.keywords}
+            onChange={e => setFormData(prev => ({ ...prev, keywords: e.target.value }))}
+            placeholder="exemplo: oferta, smartphone, tecnologia"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+          />
+          <p className="mt-1 text-sm text-gray-500">
+            Adicione palavras-chave relevantes para SEO, separadas por vírgula
+          </p>
         </div>
 
         <Button type="submit" className="w-full">

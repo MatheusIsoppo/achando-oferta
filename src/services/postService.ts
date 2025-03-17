@@ -28,6 +28,7 @@ export interface Post {
   };
   affiliate_link?: string;
   store_name?: 'mercado_livre' | 'amazon' | 'magalu' | 'kabum' | 'outros';
+  keywords?: string[];
 }
 
 export const postService = {

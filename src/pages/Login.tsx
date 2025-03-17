@@ -24,8 +24,8 @@ export default function Login() {
       if (error) throw error;
 
       navigate('/admin/backups');
-    } catch (err: any) {
-      setError(err.message || 'Erro ao fazer login');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Erro ao fazer login');
     } finally {
       setLoading(false);
     }

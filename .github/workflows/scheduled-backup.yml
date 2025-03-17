@@ -9,6 +9,8 @@ on:
 jobs:
   backup:
     runs-on: ubuntu-latest
+    environment: Production
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
